@@ -254,7 +254,6 @@ onBeforeUnmount(() => {
       <h2 id="calendar-title">活动日历</h2>
     </div>
     <div class="events-calendar-tools">
-      <p>活动日期确认后将按时间顺序展示，方便提前安排与报名。</p>
       <div class="events-timeline-nav" aria-label="活动月份导航">
         <button
           type="button"
@@ -1038,11 +1037,13 @@ onBeforeUnmount(() => {
 }
 
 .events-calendar-head {
+  position: relative;
   display: flex;
-  align-items: end;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 24px;
   margin-bottom: clamp(88px, 10vw, 136px);
+  text-align: center;
 }
 
 .events-calendar .events-kicker {
@@ -1067,9 +1068,13 @@ onBeforeUnmount(() => {
 }
 
 .events-calendar-tools {
+  position: absolute;
+  top: 50%;
+  right: 0;
   display: flex;
   align-items: center;
   gap: 20px;
+  transform: translateY(-50%);
 }
 
 .events-timeline-nav {
@@ -1246,12 +1251,12 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border: 1px solid rgba(0, 151, 157, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
   padding: 12px 20px;
-  background: #ffffff;
-  color: #202124;
-  box-shadow: 0 12px 28px rgba(37, 73, 48, 0.07);
+  background: #5f625f;
+  color: #ffffff;
+  box-shadow: 0 12px 28px rgba(43, 47, 43, 0.14);
 }
 
 .events-month-header > div {
@@ -1261,19 +1266,19 @@ onBeforeUnmount(() => {
 }
 
 .events-month-header h3 {
-  color: #202124;
+  color: #ffffff;
   font-size: clamp(24px, 2.2vw, 31px);
   letter-spacing: -0.03em;
 }
 
 .events-month-header > span:last-child {
-  color: #858795;
+  color: rgba(255, 255, 255, 0.58);
   font-size: 15px;
   letter-spacing: 0.08em;
 }
 
 .events-month-code {
-  color: #00979d;
+  color: #c9f8d9;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 10px;
   font-weight: 700;
@@ -1346,17 +1351,23 @@ onBeforeUnmount(() => {
 }
 
 .events-archive-head {
+  position: relative;
   display: flex;
-  align-items: end;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
   gap: 20px;
-  margin-bottom: clamp(52px, 6vw, 80px);
+  margin-bottom: clamp(80px, 8vw, 112px);
+  text-align: center;
 }
 
 .events-archive-tools {
+  position: absolute;
+  top: 50%;
+  right: 0;
   display: flex;
   align-items: center;
   gap: 14px;
+  transform: translateY(-50%);
 }
 
 .events-archive-search {
@@ -1587,8 +1598,9 @@ onBeforeUnmount(() => {
   }
 
   .events-calendar-head {
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
+    gap: 18px;
   }
 
   .events-calendar-head p {
@@ -1597,8 +1609,10 @@ onBeforeUnmount(() => {
   }
 
   .events-calendar-tools {
+    position: static;
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
+    transform: none;
   }
 
   .events-event-card {
@@ -1606,13 +1620,15 @@ onBeforeUnmount(() => {
   }
 
   .events-archive-head {
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
   }
 
   .events-archive-tools {
+    position: static;
     width: 100%;
-    justify-content: space-between;
+    justify-content: center;
+    transform: none;
   }
 
   .events-archive-search {
@@ -1678,13 +1694,13 @@ onBeforeUnmount(() => {
   }
 
   .events-calendar-tools {
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
     gap: 14px;
   }
 
   .events-timeline-nav {
-    align-self: flex-end;
+    align-self: center;
   }
 
   .events-filters {
@@ -1697,13 +1713,13 @@ onBeforeUnmount(() => {
   }
 
   .events-archive-head {
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
     gap: 8px;
   }
 
   .events-archive-tools {
-    align-items: stretch;
+    align-items: center;
     flex-direction: column;
   }
 
@@ -1767,6 +1783,10 @@ onBeforeUnmount(() => {
   -webkit-text-fill-color: #6ee5e8;
 }
 
+.dark .events-month-code {
+  color: #ffffff;
+}
+
 .dark .events-feature-card {
   border-color: rgba(139, 233, 236, 0.12);
   background: #0c262a;
@@ -1815,9 +1835,9 @@ onBeforeUnmount(() => {
 }
 
 .dark .events-month-header {
-  border-color: rgba(139, 233, 236, 0.1);
-  background: #102f33;
-  color: #f0ffff;
+  border-color: rgba(255, 255, 255, 0.08);
+  background: #444744;
+  color: #ffffff;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
 }
 
