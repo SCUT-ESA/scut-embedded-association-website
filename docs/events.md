@@ -1,4 +1,6 @@
 ---
+title: 活动公告
+description: 华南理工大学嵌入式协会活动、工作坊、比赛与招新公告。
 aside: false
 outline: false
 ---
@@ -16,32 +18,76 @@ const timelineCanScrollRight = ref(false)
 
 const archiveQuery = ref('')
 const archiveSelectedIndex = ref(0)
-const archiveItems = [
+// ===== 活动数据：以后新增/修改活动只改这里 =====
+// 复制一条对象即可新增活动。
+// - id 必须唯一
+// - date / month 直接填展示文字，例如 '3 月 15 日' / '2026 年 3 月'
+// - featured: true 的活动会出现在“最新公告”
+// - month 相同的活动会自动归到同一个日历分组
+// - priority 越大越靠前
+// - keywords 用于历史公告搜索
+const events = [
   {
-    id: 'recent',
-    title: '待补充',
-    date: '待补充',
-    summary: '待补充',
-    keywords: '待补充',
+    id: 'event-1',
+    title: '活动名称待补充',
+    date: '日期待补充',
+    month: '月份待补充',
+    summary: '活动时间、地点与参与方式待补充。',
+    keywords: '待补充 活动',
+    status: '即将公布',
+    featured: true,
     priority: 30
   },
   {
-    id: 'history',
-    title: '待补充',
-    date: '待补充',
-    summary: '待补充',
-    keywords: '待补充',
+    id: 'event-2',
+    title: '活动名称待补充',
+    date: '日期待补充',
+    month: '月份待补充',
+    summary: '活动内容与报名信息待补充。',
+    keywords: '待补充 活动',
+    status: '筹备中',
+    featured: true,
     priority: 20
   },
   {
-    id: 'materials',
-    title: '待补充',
-    date: '待补充',
-    summary: '待补充',
-    keywords: '待补充',
+    id: 'event-3',
+    title: '活动名称待补充',
+    date: '日期待补充',
+    month: '月份待补充',
+    summary: '活动详情与参与方式待补充。',
+    keywords: '待补充 活动',
+    status: '等待通知',
+    featured: true,
     priority: 10
   }
 ]
+// =================================================
+
+const latestEvents = computed(() => {
+  const featured = events.filter((event) => event.featured)
+  const source = featured.length ? featured : events
+  return [...source].sort((left, right) => right.priority - left.priority).slice(0, 3)
+})
+
+const eventMonths = computed(() => {
+  const months = []
+  for (const event of events) {
+    const label = event.month || '月份待补充'
+    let month = months.find((item) => item.label === label)
+    if (!month) {
+      month = {
+        label,
+        code: String(months.length + 1).padStart(2, '0'),
+        events: []
+      }
+      months.push(month)
+    }
+    month.events.push(event)
+  }
+  return months
+})
+
+const archiveItems = computed(() => events)
 
 let resizeObserver
 let dragStartX = 0
@@ -138,7 +184,7 @@ function archiveScore(item, query) {
 
 const archiveMatches = computed(() => {
   const query = normalizeArchiveQuery(archiveQuery.value)
-  const matches = archiveItems.map((item) => ({
+  const matches = archiveItems.value.map((item) => ({
     item,
     score: query ? archiveScore(item, query) : 0
   }))
@@ -236,11 +282,21 @@ onBeforeUnmount(() => {
       <h2>最新公告</h2>
     </div>
     <div class="events-feature-content">
-      <div class="events-placeholder-lines">
-        <p>待补充</p>
-        <p>待补充</p>
-        <p>待补充</p>
+      <div v-if="latestEvents.length" class="events-latest-list">
+        <article
+          v-for="event in latestEvents"
+          :key="event.id"
+          class="events-latest-item"
+        >
+          <span class="events-latest-date">{{ event.date }}</span>
+          <span class="events-latest-copy">
+            <strong>{{ event.title }}</strong>
+            <span>{{ event.summary }}</span>
+          </span>
+          <span class="events-latest-status">{{ event.status }}</span>
+        </article>
       </div>
+      <p v-else class="events-archive-empty">活动公告正在整理中。</p>
     </div>
   </article>
 </section>
@@ -288,43 +344,28 @@ onBeforeUnmount(() => {
       @scroll="syncTimelineScrollbar"
     >
       <div class="events-timeline-track">
-        <section class="events-month-column">
+        <section
+          v-for="month in eventMonths"
+          :key="month.label"
+          class="events-month-column"
+        >
           <div class="events-month-header">
             <div>
-              <span class="events-month-code">01</span>
-              <h3>月份待补充</h3>
+              <span class="events-month-code">{{ month.code }}</span>
+              <h3>{{ month.label }}</h3>
             </div>
             <span aria-hidden="true">•••</span>
           </div>
           <div class="events-month-cards">
-            <article class="events-event-card">
-              <span class="events-card-date">日期待补充</span>
-              <h4>活动名称待补充</h4>
-              <p>活动时间、地点与参与方式待补充。</p>
-              <span class="events-card-status">即将公布</span>
-            </article>
-            <article class="events-event-card">
-              <span class="events-card-date">日期待补充</span>
-              <h4>活动名称待补充</h4>
-              <p>活动内容与报名信息待补充。</p>
-              <span class="events-card-status">筹备中</span>
-            </article>
-          </div>
-        </section>
-        <section class="events-month-column">
-          <div class="events-month-header">
-            <div>
-              <span class="events-month-code">02</span>
-              <h3>月份待补充</h3>
-            </div>
-            <span aria-hidden="true">•••</span>
-          </div>
-          <div class="events-month-cards">
-            <article class="events-event-card">
-              <span class="events-card-date">日期待补充</span>
-              <h4>活动名称待补充</h4>
-              <p>活动详情与参与方式待补充。</p>
-              <span class="events-card-status">等待通知</span>
+            <article
+              v-for="event in month.events"
+              :key="event.id"
+              class="events-event-card"
+            >
+              <span class="events-card-date">{{ event.date }}</span>
+              <h4>{{ event.title }}</h4>
+              <p>{{ event.summary }}</p>
+              <span class="events-card-status">{{ event.status }}</span>
             </article>
           </div>
         </section>
@@ -543,6 +584,55 @@ onBeforeUnmount(() => {
   flex-direction: column;
   justify-content: center;
   padding: clamp(34px, 5vw, 58px);
+}
+
+.events-latest-list {
+  border-top: 1px solid rgba(46, 58, 49, 0.1);
+}
+
+.events-latest-item {
+  display: grid;
+  grid-template-columns: minmax(88px, 0.24fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1px solid rgba(46, 58, 49, 0.1);
+  padding: 18px 4px;
+}
+
+.events-latest-date {
+  color: #777988;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.events-latest-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.events-latest-copy strong {
+  color: #202124;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.events-latest-copy > span {
+  color: #686a78;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.events-latest-status {
+  color: #288b69;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 .events-placeholder-lines {
@@ -1919,6 +2009,35 @@ onBeforeUnmount(() => {
   color: #8be9ec;
 }
 
+.dark .events-latest-list,
+.dark .events-latest-item {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .events-latest-copy strong {
+  color: #f2fff9;
+}
+
+.dark .events-latest-copy > span {
+  color: rgba(226, 255, 255, 0.62);
+}
+
+.dark .events-latest-status {
+  color: #8fe3b4;
+}
+
+@media (max-width: 640px) {
+  .events-latest-item {
+    grid-template-columns: 1fr auto;
+    gap: 8px 14px;
+    padding: 16px 4px;
+  }
+
+  .events-latest-date {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :global(.vp-doc._events h1),
   .events-rule,
@@ -1942,13 +2061,13 @@ onBeforeUnmount(() => {
     animation: none;
   }
 
-  .events-latest-list li,
+  .events-latest-item,
   .events-event-card,
   .events-archive-card {
     transition: none;
   }
 
-  .events-latest-list li:hover,
+  .events-latest-item:hover,
   .events-event-card:hover {
     transform: none;
   }
