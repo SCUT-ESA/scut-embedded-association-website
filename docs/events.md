@@ -28,37 +28,16 @@ const archiveSelectedIndex = ref(0)
 // - keywords 用于历史公告搜索
 const events = [
   {
-    id: 'event-1',
-    title: '活动名称待补充',
-    date: '日期待补充',
-    month: '月份待补充',
-    summary: '活动时间、地点与参与方式待补充。',
-    keywords: '待补充 活动',
-    status: '即将公布',
+    id: '2026-11-association-website',
+    title: '嵌入式协会官网建设进行中',
+    date: '2026 年 11 月',
+    month: '2026 年 11 月',
+    summary:
+      '协会官网已经上线，目前正在完善首页、学习路线、项目展示、活动公告和加入联系等页面，欢迎组员参与内容共建。',
+    keywords: '官网 网站 建设 项目 上线 协会',
+    status: '持续更新',
     featured: true,
-    priority: 30
-  },
-  {
-    id: 'event-2',
-    title: '活动名称待补充',
-    date: '日期待补充',
-    month: '月份待补充',
-    summary: '活动内容与报名信息待补充。',
-    keywords: '待补充 活动',
-    status: '筹备中',
-    featured: true,
-    priority: 20
-  },
-  {
-    id: 'event-3',
-    title: '活动名称待补充',
-    date: '日期待补充',
-    month: '月份待补充',
-    summary: '活动详情与参与方式待补充。',
-    keywords: '待补充 活动',
-    status: '等待通知',
-    featured: true,
-    priority: 10
+    priority: 40
   }
 ]
 // =================================================
@@ -371,7 +350,7 @@ onBeforeUnmount(() => {
         </section>
       </div>
     </div>
-    <div class="events-scroll-control">
+    <div v-if="timelineIsScrollable" class="events-scroll-control">
       <span class="events-scroll-label">左右拖动</span>
       <div
         ref="timelineProgress"
