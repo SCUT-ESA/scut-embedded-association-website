@@ -7,8 +7,8 @@ const active = ref(null)
 const order = ref('desc')
 
 const teams = {
-  sw: { label: '软件组', en: 'SOFTWARE', },
-  hw: { label: '硬件组', en: 'HARDWARE', }
+  sw: { label: '软件组', en: 'SOFTWARE', desc: '代码、算法与全栈开发' },
+  hw: { label: '硬件组', en: 'HARDWARE', desc: '电路、嵌入式与硬件调试' }
 }
 
 const projects = {
